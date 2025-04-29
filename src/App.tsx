@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 import 'bulma/css/bulma.css';
 import './App.scss';
@@ -60,14 +60,35 @@ const getPreparedGoods = (
 export const App = () => {
   const [sortField, setSortField] = useState('');
   const [isReversed, setIsReversed] = useState(false);
+  const [query, setQuery] = useState('');
 
   const visibleGoods = getPreparedGoods(goodsFromServer, {
     sortField,
     isReversed,
+    query,
   });
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
 
   return (
     <div className="section content">
+      <div className="field">
+        <label htmlFor="search" className="label">
+          Search
+        </label>
+        <div className="control">
+          <input
+            id="search"
+            type="text"
+            className="input"
+            placeholder="Search goods..."
+            value={query}
+            onChange={handleOnChange}
+          />
+        </div>
+      </div>
       <div className="buttons">
         <button
           type="button"
@@ -109,6 +130,7 @@ export const App = () => {
             onClick={() => {
               setSortField('');
               setIsReversed(false);
+              setQuery('');
             }}
             type="button"
             className="button is-danger is-light"
